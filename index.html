@@ -78,6 +78,9 @@
     // The main difference from fetchOne() will be the URL you request from; check
     // the writeup to view the URL pattern for fetch one and fetch all
     function fetchAll() {
+      document.getElementById("recordIDcontainer").style.display = "none";
+      document.getElementById("recordForm").style.display = "none";
+      
       let endpoint = document.getElementById("endpoint");
       const request = new Request(endpoint.value, {
         method: 'GET'
@@ -93,6 +96,9 @@
     // The main difference from fetchAll() will be the URL you request from; check
     // the writeup to view the URL pattern for fetch one and fetch all
     function fetchOne() {
+      document.getElementById("recordIDcontainer").style.display = "none";
+      document.getElementById("recordForm").style.display = "none";
+      
       let endpoint = document.getElementById("endpoint");
       let input = window.prompt("Enter record id:");
 
@@ -127,6 +133,7 @@
     function createRecord() {
       let recordForm = document.getElementById("recordForm");
       recordForm.style.display = "block";
+      document.getElementById("recordIDcontainer").style.display = "none";
 
       recordForm.addEventListener("submit", function (event) {
         event.preventDefault();
@@ -188,6 +195,40 @@
           .then(data => data)
           .catch(error => error);
       });
+    }
+    
+    // This function should use fetch to delete one existing entry in the given endpoint.
+    // From the 4 CRUD actions, this is the DELETE action, and uses the DELETE http method.
+    // The main difference from fetchOne() will be the HTTP method you use to make your
+    // request; check the writeup to view the URL pattern for get one and delete. THERE IS NO 
+    // delete all, only delete one.
+    function deleteRecord() {
+      // TODO
+      document.getElementById("recordIDcontainer").style.display = "none";
+      document.getElementById("recordForm").style.display = "none";
+
+      let endpoint = document.getElementById("endpoint");
+      let input = window.prompt("Enter record id:");
+
+      if (input != null && input != "") {
+        input = Number(input);
+      }
+
+      const request = new Request(`${endpoint.value}/${input}`, {
+        method: 'DELETE',
+      });
+
+      fetch(request)
+        .then(response => {
+          if (response.status == "404") {
+            throw new Error("Network Error: 404");
+          }
+          return response.json();
+        })
+        .then(data => data)
+        .catch(error => {
+          document.getElementById("output").innerHTML = error;
+        });
     }
 
     window.addEventListener('DOMContentLoaded', () => {
